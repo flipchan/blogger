@@ -1,0 +1,6 @@
+flask
+werkzeug
+python-gnupg
+python-ecdsa
+flask-scrypt
+python-mysqldb
