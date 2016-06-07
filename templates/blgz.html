@@ -1,0 +1,75 @@
+<html>
+
+<head>
+
+<title>blogs</title>
+<link rel=stylesheet href="style.css" type="text/css">
+
+</head>
+<ghost><div id='ghost'>
+<pre><code>
+                       ,~~~~~~~~~~~.
+                       '  Bitcoin n  `
+        ,~~~~~~,       |    blogs!      | 
+       / ,      \      ',  ________,"
+      /,~|_______\.      \/
+     /~ (__________)   
+    (*)  ; (^)(^)':
+        =;  ____  ;
+          ; """"  ;=           Welcome to blogger
+   {"}_   ' '""' ' _{"}
+   \__/     >  <   \__/
+      \    ,"   ",  /
+       \  "       /"
+          "      "=			an opensource blogging platform
+           >     <
+          ="     "-
+          -`.   ,'
+                -
+ with crypto`--'
+
+
+<p> <font face="verdana" color="green"><center>root@box:~#./blogger.py<br>
+secure blogging platform launched
+
+</font></p><code></pre></ghost></div>
+</center>
+<body>
+<div id='page'>
+
+ <div id="menu">
+	<h2>Blogz: </h2>        
+        <hr>
+        <p>{{ usr  }}</p>
+        <p><a href="../">webweb01</a></p>
+        <p><a href=></a></p>
+
+</div>
+
+
+
+
+<div id="main">
+        <h1>Latest</h1>
+        
+        # Skriv sql-sats
+        $sql = "SELECT * FROM news ORDER BY date DESC;";
+        $stmt = $pdo->prepare($sql);
+
+        # get shit
+        foreach ($result as $row) {
+        # Loopa igenom alla nyheter
+            echo "<div class=\"news\">";
+            echo "<a href=\"news.php?newsId=".$row['newsId']."\">";
+            echo "<h2>".$row['headline']."</h2>";
+            echo "</a>";
+            echo "<p>".nl2br($row['content'])."</p>";
+            echo "<p>".$row['date']."</p>";
+            echo "</div>";
+      
+    </div>
+
+
+</body>
+</div>
+</html>

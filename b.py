@@ -39,6 +39,8 @@ bloggen = flask.Flask(__name__) #app3n
 bloggen.config['ALLOWED_EXTENSIONS'] = ''
 bloggen.config['UPLOAD_FOLDER'] = 'static/avatars/'
 
+blogsfing = 'BA99 FE9E 9E74 EBE1 415C  AA0B C0F8 FFB1 2D49 8EC7'
+
 #define some k3ys
 bloggen.secret_key = 'urkey'
 
@@ -165,7 +167,7 @@ def login():
 	    xaa.execute('select pgp_fingerprint from bloggen where nick=%s', (nickname,))
 	    thefing = xaa.fetchone()
 	    encrypted_ascii_data = gpg.encrypt(data, thefing)
-	    sig2 = gpg.sign(hello, default_key=lpgp, passphrase='passwd')
+	    sig2 = gpg.sign(hello, default_key=blogsfing, passphrase='passwd')
 	    sigmsg = sig2
 	    if flask.request.method == 'POST':
 		if secret == secdata:

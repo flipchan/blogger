@@ -1,0 +1,134 @@
+html, body{
+    margin: 0;
+    padding: 0;
+}
+
+
+html{
+    background: #99CCFF; 
+}
+
+body {
+    font-size: 12px;
+    font-family: "Times New Roman", Times, serif;    
+    font-weight: normal;
+    margin-top: 0;
+    background:#33CCFF;        
+     font: 12pt "Times New Roman", Times, serif;
+    color:#3399FF;
+}
+
+ghost {
+    font-size: 12px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: normal;
+    margin-top: 0;
+    background:#333333;
+    font: 12pt "Times New Roman", Times, serif;
+    color:#3399FF;
+
+}
+
+h1, h2, h3 {
+    color: #3399FF;
+    font-weight: 600;
+}
+
+pre, code {
+	color: #CCCCCC;
+}
+
+h1 {
+    text-transform:uppercase;        
+    font-size: 24px;
+    line-height: 28px;
+    margin-top: 4px;
+}
+
+h2 {
+    text-transform:uppercase;        /* Transform all letter to uppercase. */
+    font-size: 16px;
+    margin: 0.83em 0 0;
+    line-height: 28px;
+}
+h3 {
+    font-size: 14px;
+    text-align: center;
+    letter-spacing: -1px;
+    width: auto;
+}
+
+a {
+    color: #3399FF;
+    text-decoration: underline;
+}
+
+input, select, textarea {
+    color: #3399FF;
+    font-size: 12px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: normal;
+    margin-top: 2px;
+}
+
+p {
+    color: #443266;
+    font-size: 13px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: 400;
+    margin-top: 1em;
+}
+
+
+#page {
+    position: relative;
+    min-height:550px;
+    height: auto;
+    width: 800px;
+    margin: 20px auto;
+    border: solid 1px #66FFFF;
+    background: #339999;
+    padding: 20px;
+    white-space: auto;
+}
+
+#ghost {
+    position: relative;
+    min-height:550px;
+    height: auto;
+    width: 800px;
+    margin: 20px auto;
+    border: solid 1px #66FFFF;
+    background: #333333;
+    padding: 20px;
+    white-space: auto;
+}
+
+#menu {
+    width: 150px;
+    left: 0px;
+    top: 30px;
+    position: absolute;
+    visibility: visible;
+    padding: 20px;
+    border: solid 0px 66FFFF;
+}
+
+#main {
+    position: relative;
+    height: auto;
+    width: 550px;
+    margin: 0px auto 0;
+    margin-left: 200px;
+    border: solid 0px 66FFFF;
+}
+
+.news {
+    border-radius: 25px;
+    position: relative;
+    margin:10px 10px 40px 10px;
+    border: solid 2px #66FFFF;
+    background: #DED29E;
+    padding: 10px;
+}
+
