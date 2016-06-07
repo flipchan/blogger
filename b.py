@@ -40,17 +40,17 @@ bloggen.config['ALLOWED_EXTENSIONS'] = ''
 bloggen.config['UPLOAD_FOLDER'] = 'static/avatars/'
 
 #define some k3ys
-bloggen.secret_key = 'TDm3dYbdMVjhV6G3K5HJ6GY65yNakQchKfeQOIBp+DjnaAeeuwzTyUUH+S3F9LHTU/Mq4fHeXojVHc6ppO6OUrHUfQ'
+bloggen.secret_key = 'urkey'
 
-hash1 = 'ebgLMawd1gUw2ggKPDs/7OIgVfArUyMir2nH11gdAIqfPU2KRDYTen8tmjUnAP4xCXgNxmVIllzrTYezlDTyPzbbcg'
-hash2 = 'ftyLNB/h9ZDfv/bWF5/tLXK4I/ZSqLDJPV9Nfw48/I5obBqLcdLGArUnbHZP0vYhgz7yh0YXAuGAUkEKSpD386XuAA'
-hash3 = 'XFMGOHC9ME+OeXU3A9vyDJfqIZp60tZ7qQYmyDHgUhafd7qpsUtCO7vIDFHopG0V9fH3XJuL01H0SRgcDaOdgCIE+Q'
+hash1 = 'urkey1'
+hash2 = 'urkey2'
+hash3 = 'urkey3'
 
 #30 min for perm session
 bloggen.permanent_session_lifetime = timedelta(minutes=30)
 
 #mysql connect
-db = MySQLdb.connect(host='localhost', user='warez', passwd='passwd', db='bloggen')
+db = MySQLdb.connect(host='localhost', user='', passwd='', db='bloggen')
 #perm session in 30min
 bloggen.permanent_session_lifetime = timedelta(minutes=30)
 #flask.session.permanent = True
@@ -269,28 +269,6 @@ def rss():
 
 	return flask.render_template('rss.xml')
 
-#-------------------- DUCKDUCKGO's hashcracker
-@bloggen.route('/duck')
-def duck():
-	return ''' 
-<html><center> Fully workin api for duckduckgo hashcracker  <br> 1,7gigabytes of cracked md5 atm
-
-<br><pre>plz note that this is an opensource public hashcracker
-</html>
-
-'''
-
-@bloggen.route('/crack/<crackhash>', methods = ['GET', 'POST'])
-def crack(crackhash):
-    searr = crackhash
-    searchone = open(thefile, 'r')
-    for line in searchone:
-        if searr in line: return 'hash was cracked: ' + line
-    else:  
-        return 'hash was not cracked'
- 
-
-#----------------------
 
 @bloggen.route('/blog/<nickname>')
 def blogs(nickname):
@@ -341,6 +319,6 @@ Glitch in matrix?<br>
 
 
 
-#run it in debug mode
+#run it in debug mode for testing remove in a real deployment
 if __name__ == '__main__':
     bloggen.run(debug=True,port=1337)
