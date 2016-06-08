@@ -28,7 +28,7 @@ import datetime
 
 
 #gnupg , use root???or usr
-gpg = gnupg.GPG(homedir='/home/gibba/.gnupg')    #this depends
+gpg = gnupg.GPG(homedir='/home/uruser')    #this depends
 #gpg = gnupg.GPG(gnupghome='/root/.gnupg') #	         on ur gpg version/os
 gpg.encoding = 'utf-8'
 
