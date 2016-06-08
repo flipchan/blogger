@@ -1,0 +1,54 @@
+<html>
+<head>
+	<title>blogpost</title>
+</head>
+<body>
+    {% if error %}
+
+    <label class="label label-important"><center><t color="red"> {{ error }} <t color="red"></t></center> </label>
+    {% endif %}
+
+
+
+
+{%	for entry in entries %}
+
+<h2>	{{ entry.title }} </h2>	<br>
+ <br>
+<p>				{{ entry.texten }}</p><br>
+
+<p>posted by <a href="/blogger/{{ entry.vem }}">{{ entry.vem }}</a> at {{ entry.time }}  </p>
+	<br>
+<br>
+<h2>Comments:</h2>
+{{ entry.by }}
+{{ entry.comment }}
+
+
+{% endfor %}
+
+{{ fello }}
+
+<form method="POST" action="">
+<h3>Make a comment</h3>
+
+ <label for="by" class="sr-only">name:</label>
+        <input type="text" name="by" id="by" class="form-control" placeholder="by" size="50" required>
+
+<br>
+ 
+
+ <label for="comment" class="sr-only">comment:</label>
+        <input type="text" name="comment" id="comment" class="form-control" placeholder="comment"  required>
+
+
+
+<input name=_doda_csrf type=hidden value="{{ doda_csrf() }}">
+
+      <br><input type="submit" value="comment!">
+
+</form></div>
+        
+
+</body>
+</html>

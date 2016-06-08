@@ -1,13 +1,29 @@
 <html>
-
+<head><title>2factor</title>	</head>
 <body>
 <center>
 <h2>2factor pgp auth</h2>
 
+
 <br>
+<br>
+we have encrypted it useing ur pgp key id which is: {{ kid }}
 <br>
 hello {{ user }}!<br><br>
+
+decrypt this msg:
+<pre><code>
 {{ thecode }}
+</pre></code>
+
+<form>
+
+<label for="code" class="sr-only">code:</label>
+        <input type="code" name="code" id="code" class="form-control" placeholder="code" required>
+<input name=_doda_csrf type=hidden value="{{ doda_csrf() }}">
+<br>
+        <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">enter!</button>
+</form>
 </body>
 
 </html>

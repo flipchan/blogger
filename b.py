@@ -28,28 +28,28 @@ import datetime
 
 
 #gnupg , use root???or usr
-gpg = gnupg.GPG(homedir='/root/.gnupg')    #this depends
+gpg = gnupg.GPG(homedir='/home/gibba/.gnupg')    #this depends
 #gpg = gnupg.GPG(gnupghome='/root/.gnupg') #	         on ur gpg version/os
 gpg.encoding = 'utf-8'
 
-reload( sys )
+reload( sys ) #live debugging 
 sys.setdefaultencoding('utf-8')
 
 bloggen = flask.Flask(__name__) #app3n
 bloggen.config['ALLOWED_EXTENSIONS'] = ''
 bloggen.config['UPLOAD_FOLDER'] = 'static/avatars/'
 
-blogsfing = 'BA99 FE9E 9E74 EBE1 415C  AA0B C0F8 FFB1 2D49 8EC7'
-
 #define some k3ys
-bloggen.secret_key = 'urkey'
+bloggen.secret_key = 'TDm3dYbdMVjhV6G3K5HJ6GY65yNakQchKfeQOIBp+DjnaAeeuwzTyUUH+S3F9LHTU/Mq4fHeXojVHc6ppO6OUrHUfQ'
 
-hash1 = 'urkey1'
-hash2 = 'urkey2'
-hash3 = 'urkey3'
+hash1 = 'ebgLMawd1gUw2ggKPDs/7OIgVfArUyMir2nH11gdAIqfPU2KRDYTen8tmjUnAP4xCXgNxmVIllzrTYezlDTyPzbbcg'
+hash2 = 'ftyLNB/h9ZDfv/bWF5/tLXK4I/ZSqLDJPV9Nfw48/I5obBqLcdLGArUnbHZP0vYhgz7yh0YXAuGAUkEKSpD386XuAA'
+hash3 = 'XFMGOHC9ME+OeXU3A9vyDJfqIZp60tZ7qQYmyDHgUhafd7qpsUtCO7vIDFHopG0V9fH3XJuL01H0SRgcDaOdgCIE+Q'
 
 #30 min for perm session
 bloggen.permanent_session_lifetime = timedelta(minutes=30)
+
+blogsfing = 'BA99 FE9E 9E74 EBE1 415C  AA0B C0F8 FFB1 2D49 8EC7'
 
 #mysql connect
 db = MySQLdb.connect(host='localhost', user='', passwd='', db='bloggen')
@@ -73,7 +73,65 @@ bloggen.permanent_session_lifetime = timedelta(minutes=30)
 #PRIMARY KEY(user_id)
 #);
 #
-#
+#create table blogs(
+#blogg_id int(11) not null AUTO_INCREMENT,
+#title text not null,
+#texten longtext not null,
+#vem text not null,
+#comment text not null,
+#commentedby tinytext not null,
+#at_time date not null
+#PRIMARY KEY(blogg_id)
+#);
+# create table comment ( comment_id int(11) not null AUTO_INCREMENT, comment_date date not null, comment text not null, commentedby text not null, PRIMARY KEY (comment_id));
+
+#(
+#inside the db
+#mysql> show tables;
+#+-------------------+
+#| Tables_in_bloggen |
+#+-------------------+
+#| bloggen           |
+#| blogs             |
+#| comment           |  #didnt need that
+#+-------------------+
+#3 rows in set (0.00 sec)
+
+#mysql> show columns in bloggen;
+#+-----------------+--------------+------+-----+---------+----------------+
+#| Field           | Type         | Null | Key | Default | Extra          |
+#+-----------------+--------------+------+-----+---------+----------------+
+#| user_id         | int(11)      | NO   | PRI | NULL    | auto_increment |
+#| name            | varchar(200) | NO   |     | NULL    |                |
+#| des             | longtext     | NO   |     | NULL    |                |
+#| password        | text         | NO   |     | NULL    |                |
+#| pgp             | text         | NO   |     | NULL    |                |
+#| pgp_fingerprint | text         | NO   |     | NULL    |                |
+#| role            | text         | NO   |     | NULL    |                |
+#| joined          | date         | NO   |     | NULL    |                |
+#| btcaddress      | text         | NO   |     | NULL    |                |
+#| email           | text         | NO   |     | NULL    |                |
+#+-----------------+--------------+------+-----+---------+----------------+
+#10 rows in set (0.01 sec)
+
+#mysql> show columns in blogs;
+#+--------------+----------+------+-----+---------+----------------+
+#| Field        | Type     | Null | Key | Default | Extra          |
+#+--------------+----------+------+-----+---------+----------------+
+#| blogg_id     | int(11)  | NO   | PRI | NULL    | auto_increment |
+#| title        | text     | NO   |     | NULL    |                |
+#| texten       | longtext | NO   |     | NULL    |                |
+#| comment_date | text     | NO   |     | NULL    |                |
+#| comment_id   | text     | NO   |     | NULL    |                |
+#| comment      | text     | NO   |     | NULL    |                |
+#| commentedby  | text     | NO   |     | NULL    |                |
+#| vem          | text     | NO   |     | NULL    |                |
+#| at_time      | date     | NO   |     | NULL    |                |
+#+--------------+----------+------+-----+---------+----------------+
+#9 rows in set (0.01 sec)
+
+#mysql> 
+#)
 
 #define anonymous role och anti-csrf skyddet
 @bloggen.before_request
@@ -82,9 +140,9 @@ def csrf_protect():
         token = flask.session.pop('_doda_csrf', None)
         if not token or token != flask.request.form.get('_doda_csrf'):
             return 'error with your request'
-#def make_anon():                                        nope this aint good for now
-#    if 'role' or 'user' or 'admin' not in session:
-#        session['role'] = 'anonymous'
+#def make_anon():                                #        nope this aint good for now
+ #   if 'role' or 'user' or 'admin' not in flask.session:
+#	session['role'] = False
 #        session['nick'] = 'anonymous user'
 #def ses_perm():
    # session.permanent = True
@@ -104,22 +162,112 @@ def index():
     
     return flask.render_template('index.html')
 
+@bloggen.route('/bloghome')
+def bloghome():
+    cur = db.cursor()
+    cur.execute('select blogg_id, title, texten, vem, at_time from blogs order by blogg_id')
+    cul = db.cursor()
+    cul.execute('select name from bloggen')
+    entries2 = [dict(usr=row[0]) for row in cul.fetchall()]
+    entries = [dict(bid=row[0], title=row[1], texten=row[2], vem=row[3], time=row[4]) for row in cur.fetchall()]
+    return flask.render_template('blgz.html', entries=entries)
 
+@bloggen.route('/blogg/<blogpostid>', methods=['POST', 'GET'])
+def blogposts(blogpostid):
+    theid = blogpostid
+    cur = db.cursor()
+    rr = db.cursor()
+    rr.execute('select comment, commentedby, comment_date from blogs where comment_id=%s order by comment_date', (theid,))
+    mentries = [dict(comment=row[0], by=row[1], date=row[2]) for row in rr.fetchall()]
+    cur.execute('select title, vem, at_time, texten, commentedby, comment from blogs where blogg_id=%s', (theid,))
+    #fello = mentries[0]
+    entries = [dict(title=row[0], vem=row[1], time=row[2], texten=row[3], by=row[4], comment=row[5]) for row in cur.fetchall()]
+    if flask.request.method == 'POST':
+	vrll = db.cursor()
+	who = flask.request.form['by']
+	comment = flask.request.form['comment']
+	com = comment.replace('<', '?')
+	comment = com
+	today = datetime.date.today()
+	
+	who = who.replace('<', '?')
+	vrll.execute('insert into blogs (comment, commentedby, comment_date) values (%s, %s, %s)', (comment, who, today))
+	
+	
+    return flask.render_template('blogpost.html', entries=entries, allentries=mentries)
+
+
+@bloggen.route('/blogger/<nick>')
+def blogger(nick):
+    n = nick
+    cur = db.cursor()
+    cur.execute('select des, joined, btcaddress from bloggen where name=%s', (n,))
+    entries = [dict(des=row[0], joined=row[1], btc=row[2]) for row in cur.fetchall()]
+    return flask.render_template('blog.html', entries=entries, name=n)
+
+@bloggen.route('/home', methods=['POST', 'GET'])
+def user():
+    if not flask.session:
+	return flask.redirect(flask.url_for('login'))
+
+    if flask.request.method == 'POST':
+	blogpost = flask.request.form['blogpost']
+	he = blogpost.replace('<', '_') #protect from <scripts>
+	blogpost = he
+	title = flask.request.form['Title'] 
+	nick = flask.escape(flask.session['nick'])
+	cur = db.cursor()
+	emnick = flask.escape(flask.session['nick'])
+	today = datetime.date.today()
+	cur.execute('insert into blogs (texten, title, vem, at_time) values (%s, %s, %s, %s)', (blogpost, title, nick, today))
+	db.commit()
+	cuu = db.cursor()
+
+	t = 'blog post added! check it at /blogg/'
+	cuu.execute('select blogg_id from blogs where title=%s', (title,))
+	ll = cuu.fetchone()
+	AA = str(t) + str(ll[0])
+	link = AA
+	return flask.render_template('user.html', error=link)  
+
+    
+    ff = db.cursor()
+    emnick = flask.escape(flask.session['nick'])
+    ff.execute('select texten, title from blogs where vem=%s', (emnick,))
+    entries = [dict(text=row[0], title=row[1]) for row in ff.fetchall()]
+    return flask.render_template('user.html', emnick=emnick, entries=entries)
 
 @bloggen.route('/main/<nick>')
-def user(nick):
+def users(nick):
     if not flask.session:
         return flask.redirect(flask.url_for('login'))
     
     
     return flask.render_template('user.html', emnick = flask.escape(flask.session['nick']),)
 
+
+
+
+#admin panel
 @bloggen.route('/admin')
 def admin():
-    if flask.session.has_key('role') and flask.session['role'] == 'admin':
-        return flask.render_template('admin.html')
+    #if flask.session.has_key('role') and flask.session['role'] == 'admin':
+    if flask.request.method == 'POST':
+	ban = flask.request.form['ban']
+	delet = flask.request.form['delete']
+	if ban:
+	    cur = db.cursor()
+	    cur.execute('update bloggen set name=%s where name=%s' ('banneduser', ban))
+	    error = 'usr ' + ban + ' have been banned'
+	    return flask.render_template('admin.html', error=error)
+	if delet:
+	    cur = db.cursor()
+	    cur.execute('alter table bloggen drop * where name=%s' (ban,))
+	    error = 'usr ' + ban + ' have been deleted' 
+	    return flask.render_template('admin.html', error=error)
+    return flask.render_template('admin.html', error=error)
 
-    return flask.redirect(flask.url_for('nono'))
+   # return flask.redirect(flask.url_for('nono'))
 
 @bloggen.route('/readme')
 def readme():
@@ -133,6 +281,9 @@ def readme():
 
 </html>
 	'''
+    
+    
+    #login
 @bloggen.route('/login', methods=['POST', 'GET'])
 def login():
     error = False
@@ -159,26 +310,43 @@ def login():
 	cuuu = db.cursor()
 	cuuu.execute('select pgp from bloggen where name=%s', (nickname,))
 	lpgp = cuuu.fetchone()
+	xaa = db.cursor()
+	xaa.execute('select pgp_fingerprint from bloggen where name=%s', (nickname,))
+	thefing = xaa.fetchone()
 	
-	if lpgp == 'Yes':
+	if lpgp[0] == 'no':
+	    if hashedpasswd == result[0]:
+		flask.session['im_online'] = True
+		flask.session['nick'] = nickname
+		flask.session['role'] = roler[0]
+		return flask.redirect(flask.url_for(str(flask.session["role"])))
+			
+	if thefing:
 	    shelloo = base64.b64encode(urandom(16)) #base64 encode bytes from the kernel to use as auth for 2 factor auth code
-	    data = shelloo
-	    xaa = db.cursor()
-	    xaa.execute('select pgp_fingerprint from bloggen where nick=%s', (nickname,))
-	    thefing = xaa.fetchone()
-	    encrypted_ascii_data = gpg.encrypt(data, thefing)
-	    sig2 = gpg.sign(hello, default_key=blogsfing, passphrase='passwd')
-	    sigmsg = sig2
-	    if flask.request.method == 'POST':
-		if secret == secdata:
-		    flask.session['im_online'] = True
-		    flask.session['nick'] = nickname
-		    flask.session['role'] = roler[0]
-		    return flask.redirect(flask.url_for(str(flask.session["role"])))		    
+	    data = str(shelloo)
+	    fing = thefing[0]
+	    encrypted_ascii_data = gpg.encrypt(data, fing)
+	    hello = str(encrypted_ascii_data)
+	    #sig2 = gpg.sign(hello, default_key=thefing, passphrase='passwd')
+	    sigmsg = hello
+	    usrin = flask.request.form['code']
+	    if usrin == shelloo:
+		flask.session['online'] = True
+		flask.session['nick'] = nickname
+		flask.session['role'] = roler[0]
+		return flask.render_template(flask.url_for(str(flask.session['role'])))
+	 #   if flask.request.method == 'POST':
+	#	if secret == secdata:
+#		    flask.session['im_online'] = True
+#		    flask.session['nick'] = nickname
+#		    flask.session['role'] = roler[0]
+            #return flask.redirect(flask.url_for(str(flask.session["role"])))		    
 
-	    return flask.render_template('2factor.html', user=nickname, thecode=sigmsg)	
+	    return flask.render_template('2factor.html', user=nickname, thecode=sigmsg, kid=fing)	
+
 	else:
 		return ''
+	    
 	if hashespasswd == result[0]:
 	        flask.session['im_online'] = True
 		flask.session['nick'] = nickname
@@ -194,7 +362,15 @@ def login():
     
     return flask.render_template('login.html', error=error)
 
-
+#pgp test
+@bloggen.route('/test', methods=['POST', 'GET'])
+def test():
+    shelloo = base64.b64encode(urandom(16)) #base64 encode bytes from the kernel to use as auth for 2 factor auth code
+    data = str(shelloo)
+    thefing = '4F2778BDB03EB510FB2AA7A74BF038498F6112B1'
+    encrypted_ascii_data = gpg.encrypt(data, thefing)
+    hello = str(encrypted_ascii_data)
+    return '' + hello
 
 @bloggen.route('/signup', methods=['POST', 'GET'])
 def signup():
@@ -220,8 +396,10 @@ def signup():
 	    hashtwo = generate_password_hash(hashone, hash2)
 	    hashthree = generate_password_hash(hashtwo, hash3)
 	    hashedpasswd = hashthree
+	 #import key
+	gpg.import_keys(pgp)
         #bitcoin it
-	privkey = urandom(32).encode('hex')
+   	privkey = urandom(32).encode('hex')
 	mypriv = privkey
 	sk = ecdsa.SigningKey.from_string(mypriv.decode('hex'), curve = ecdsa.SECP256k1)
 	vk = sk.verifying_key
@@ -242,7 +420,7 @@ def signup():
 	#if pgp_fingerprint
 	if not pgp:
 	    pgp = 'no'
-	    pgp_fingerprint = 'no'
+#	    pgp_fingerprint = 'no'
 	role = 'user' #we only want ppl to become usrs n not admins
         cur.execute('insert into bloggen (name, password, email, pgp, btcaddress, joined, role, pgp_fingerprint) values (%s, %s, %s, %s, %s, %s, %s, %s)', (nickname, hashedpasswd, email, pgp, ba, today, role, pgp_fingerprint))
         db.commit()

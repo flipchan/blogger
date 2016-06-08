@@ -1,6 +1,8 @@
-<html>
-<head>
-<title>{{ emnick }}</title>
+<html>	
+	<head>
+
+		<title>Blog</title>
+
 <style>
 
 html, body{
@@ -44,7 +46,6 @@ pre, code {
 }
 
 h1 {
-    color:#AC39B6 ;
     text-transform:uppercase;        
     font-size: 24px;
     line-height: 28px;
@@ -52,13 +53,12 @@ h1 {
 }
 
 h2 {
-    color:#AC39B6 ;
+    text-transform:uppercase;        /* Transform all letter to uppercase. */
     font-size: 16px;
     margin: 0.83em 0 0;
     line-height: 28px;
 }
 h3 {
-    color:#AC39B6 ;
     font-size: 14px;
     text-align: center;
     letter-spacing: -1px;
@@ -141,62 +141,29 @@ p {
 
 
 
-
 </style>
-</head>
+		</head>
+
+
 
 <body>
-<div id='page'>
-<div id='menu'>
-<p><a href ='/bloghome'>home</p>
+
+<center>
+{%	for entry in entries %}
+
+<h2>	{{ entry.title }} </h2>	<br>
+ {{ name }}
+<p>	you can donate to  {{ name }} with bitcoins send em to -->	<a href="bitcoin:{{ entry.btc }}">{{ entry.btc }}</a></p><br>
+
+<p>member since {{ entry.joined }} </p>
+
+	<br>
 <br>
-<p><a href='/logout'> Logout </a></p>
-
-</div>
-<center><h2>Welcome {{ emnick }}!</h2></center>
-<div id='main'>
-<div class='news'>
-    {% if error %}
-
-    <label class="label label-important"><center><t color="red"> {{ error }} <t color="red"></t></center> </label>
-    {% endif %}
-</body>
-<br>
- <h2>create post</h2>
-<form method="POST" action="">
+{%	endfor	%}
 
 
- <label for="Title" class="sr-only">Title:</label>
-        <input type="text" name="Title" id="Title" class="form-control" placeholder="Title" size="50" required>
-
-<br>
- 
-<p>Your post:<br><textarea name="blogpost" id="blogpost" class="form-control" placeholder="blogpost" rows="12" cols="50" required>
-      
-    </textarea>    
+</body>	
 
 
-<input name=_doda_csrf type=hidden value="{{ doda_csrf() }}">
-
-      <br><input type="submit" value="spara">
-            <input type="reset" value="rensa">
-</form></div>
-        
-
-
-
-
-
-
-<h2>My recent posts</h2>
-{% for entry in entries %}
-
-<h2>{{ entry.title }}</h2>
-<t>{{ entry.text }}</t>
-<br>
-{% endfor %}
-</div>
-</div>
-</body>
-</center>
-<html>
+		
+			</html>
