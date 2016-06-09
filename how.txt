@@ -1,5 +1,5 @@
 
-
+jag valde att koda den i python för att funka som real world deployment och ingen har gjort(gjort nåt liknande) de så den är uniq 
 2factor auth funkar men inte på servern ett PoC att det funkar finns på 
 flipchan.se/test så den generar pgp koden men nåt error har det blivit
 det fanns ingen PoC kod för 2factor pgp auth som liknar denna så kodad allt från grunden upp
