@@ -1,0 +1,19 @@
+
+
+2factor auth funkar men inte på servern ett PoC att det funkar finns på 
+flipchan.se/test så den generar pgp koden men nåt error har det blivit
+det fanns ingen PoC kod för 2factor pgp auth som liknar denna så kodad allt från grunden upp
+
+
+alla lösenord krypteras och hashas 3ggr med scrypt 
+en bitcoin address generas när du skapar en usr så man kan donera till den usrn
+
+sidan e aktiv på flipchan.se och på tor via http://kj5ua5w2lonh36i4.onion/
+man  kan göra inlägg och ta bort usrs samt gå in på profiler etc..
+sidan e spam/dos/linkande med ett hjälp av ett framework(github.com/flipchan/Nohidy),csrf 
+och skyddad mot <script> taggar genom att ta bort < i varje blogg inlägg
+all kod funkar 100% på debian7 (min hemma dator) 
+fått massa en del webserver errors pågrund av det
+jag valde inte att köra binero för att:
+binero ger en shared hosting plus man får inte full root access till sitt konto så den hostas på en debian8 box från min hem ip så 
+jag har bara pointat flipchan.se ditt
